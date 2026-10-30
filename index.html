@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="任务契约：成年人自愿参与的调教进化记录。">
+<title>任务契约 · 母狗进化篇</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#171016;color:#efe7ea;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.65}
+a{color:#e8a7b0}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:30px;line-height:1.3;margin:8px 0}
+h2{font-size:21px;margin:24px 0 8px}
+h3{font-size:17px;margin:0 0 6px}
+p{margin:8px 0}
+.small{font-size:13px;color:#b9a5ab}
+.eyebrow{font-size:12px;letter-spacing:2px;color:#d98a95}
+.card{background:#241b21;border:1px solid #3a2830;border-radius:14px;padding:16px;margin:12px 0}
+.tag{display:inline-block;font-size:12px;border:1px solid #5a3a43;color:#e8a7b0;border-radius:99px;padding:1px 10px;margin-right:6px}
+.locked{opacity:.55}
+button{cursor:pointer;border:0;border-radius:10px;padding:11px 16px;font-size:15px}
+.primary{background:#a63d4d;color:#fff;width:100%}
+.primary:disabled{opacity:.45}
+.outline{background:transparent;color:#efe7ea;border:1px solid #5a3a43}
+.textbtn{background:none;color:#e8a7b0;padding:6px 0}
+input,textarea,select{width:100%;background:#120d10;color:#efe7ea;border:1px solid #4a3540;border-radius:10px;padding:11px 12px;font-size:15px;margin:6px 0 12px}
+label{font-size:14px}
+.check{display:flex;gap:8px;align-items:flex-start;margin:8px 0;font-size:14px;color:#d8c8cd}
+.check input{width:auto;margin:4px 0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.tabs button{background:#241b21;color:#d8c8cd;border:1px solid #3a2830;padding:8px 13px;font-size:14px}
+.tabs button.on{background:#a63d4d;color:#fff;border-color:#a63d4d}
+.progress{height:10px;background:#3a2830;border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;background:#d98a95}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.filters button{background:#241b21;color:#d8c8cd;border:1px solid #3a2830;padding:6px 11px;font-size:13px}
+.filters button.on{background:#a63d4d;color:#fff;border-color:#a63d4d}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row button{flex:1}
+.err{color:#ff9aa6;font-size:14px;min-height:20px}
+.ok{color:#a8d8a8;font-size:14px}
+dialog{border:1px solid #4a3540;border-radius:16px;background:#241b21;color:#efe7ea;max-width:560px;width:calc(100% - 32px);padding:20px}
+dialog::backdrop{background:rgba(0,0,0,.7)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#2e2126;border:1px solid #5a3a43;padding:12px 18px;border-radius:12px;display:none;max-width:calc(100% - 32px);z-index:50}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- 年龄门 -->
+<section id="gate">
+  <p class="eyebrow">ADULTS ONLY · 18+</p>
+  <h1>任务契约<br>母狗进化篇</h1>
+  <p>本页仅限年满 18 周岁的成年人自愿进入。</p>
+  <p>未满 18 岁请自觉离开。</p>
+  <div class="card">
+    <button class="primary" id="age-ok">我已满 18 岁，进入</button>
+    <p style="text-align:center;margin:12px 0 0"><button class="textbtn" id="age-no">未满 18 岁，离开</button></p>
+  </div>
+  <p class="small" id="age-left" style="display:none">请离开本站。</p>
+</section>
+
+<!-- 契约与签署 -->
+<section id="contract" style="display:none">
+  <p class="eyebrow">第一章 · 契约宣言</p>
+  <h1>任务契约<br>母狗进化篇</h1>
+  <p>请认真阅读以下文字。这不是游戏，也不是一时兴起的玩法。这是你主动请求、自愿签署的契约。从这一刻起，你不再只是“想试试”，而是正式成为一只正在进化的小母狗。</p>
+  <div class="card">
+    <h2 style="margin-top:0">母狗的终身契约</h2>
+    <p>我承认自己是一只渴望被调教、被约束、被使用的小母狗。我愿意从最基础的服从开始，一步步接受更强的规矩、更重的任务、更彻底的羞耻与疼痛。我明白：契约一旦生效，任务必须完成；完成得越干净、越彻底，我才配继续进化。我不会找借口，不会半途而废，不会在中途假装忘记自己是谁。</p>
+    <p><b>签署即生效。</b></p>
+  </div>
+  <h2>签署 / 登录</h2>
+  <form id="sign-form" class="card">
+    <label>姓名（登录账号）<input id="f-name" maxlength="32" placeholder="请输入姓名或代号" required></label>
+    <label>联系方式（登录密码，至少 5 位）<input id="f-contact" type="password" maxlength="128" minlength="5" placeholder="至少 5 位字符" required></label>
+    <label>邀请码（仅新账号首次需要）<input id="f-invite" maxlength="64" placeholder="请输入邀请码"></label>
+    <p style="margin:2px 0 8px;font-size:14px">是否愿意投稿（仅新账号）</p>
+    <label class="check"><input type="radio" name="share" value="yes"><span>是</span></label>
+    <label class="check"><input type="radio" name="share" value="no" checked><span>否</span></label>
+    <p class="err" id="sign-err"></p>
+    <button class="primary" type="submit">进入契约</button>
+    <p class="small">温馨提示：请牢记填写的姓名和联系方式，这将成为你下次登入的账号和密码。同一手机浏览器会自动记住；换浏览器或换设备需重新输入。邀请码与投稿意愿仅保存在本机，不联网验证。</p>
+  </form>
+</section>
+
+<!-- 主界面 -->
+<section id="main" style="display:none">
+  <p class="eyebrow">任务契约 · 母狗进化篇</p>
+  <div class="card" id="profile"></div>
+  <div class="tabs">
+    <button data-tab="today" class="on">今日任务</button>
+    <button data-tab="list">任务清单</button>
+    <button data-tab="mine">我的进度</button>
+    <button data-tab="rules">规则附则</button>
+    <button data-tab="contract2">契约原文</button>
+  </div>
+  <div id="view-today"></div>
+  <div id="view-list" style="display:none"></div>
+  <div id="view-mine" style="display:none"></div>
+  <div id="view-rules" style="display:none"></div>
+  <div id="view-contract2" style="display:none"></div>
+  <p class="small">提交经中转发送给管理员审核，不公开。本页无后端，审核结果不会回显到这里；评价事宜由管理员另外联系。身体不适立即停止。</p>
+</section>
+
+</div>
+
+<dialog id="submit-dialog">
+  <div id="submit-body"></div>
+</dialog>
+<dialog id="ceremony-dialog">
+  <div id="ceremony-body"></div>
+</dialog>
+<div id="toast"></div>
+<script>
+const WORKER_URL = 'https://everyday-quest-realy.zhf771995816.workers.dev/';
+const LEVELS = ['入门母狗','顺从母狗','羞耻母狗','淫荡母狗','彻底母狗','终身母狗'];
+const DAILY_RULES = [
+  '晨起跪姿朗读契约一句并打卡',
+  '每日汇报身体状态与心情（称呼“主人”，自称“母狗”）',
+  '每日一句羞耻自述',
+  '晨起先清理，再跪姿汇报“已清理干净，等待使用”',
+  '每日佩戴打卡',
+  '毕业后每日晨起跪姿打卡（断档 3 天打回 Lv.5 重修）'
+];
+const PUNISH = ['数量加倍','追加羞耻汇报','追加疼痛任务'];
+// format: 文字 / 照片 / 视频 / 音频 / 照片+文字 / 照片/视频 / 文字+文件
+const TASKS = [
+ {id:'1-1',level:1,title:'跪姿汇报',type:'服从',format:'文字',desc:'跪姿 10 分钟，向主人文字汇报今日身体状态与心情，称呼必须用“主人”，自称“母狗”。'},
+ {id:'1-2',level:1,title:'羞耻自述',type:'羞耻',format:'文字',desc:'用最露骨的语言写一段自我介绍，写明自己是什么样的母狗、渴望什么，不许用含糊词。'},
+ {id:'1-3',level:1,title:'内衣羞耻',type:'羞耻',format:'照片',desc:'穿上最羞耻的一套内衣拍照（只拍衣物与身体局部，不露脸），提交验证。'},
+ {id:'1-4',level:1,title:'口令服从',type:'服从',format:'文字',desc:'主人发三条即时口令（如“跪下”“张嘴”“报数”），10 分钟内逐条执行并文字回复“已完成，主人”。'},
+ {id:'1-5',level:1,title:'晨起规矩',type:'日常',format:'文字',desc:'连续 3 天晨起第一件事：跪姿朗读契约一句并文字打卡。'},
+ {id:'2-1',level:2,title:'佩戴外出',type:'忍耐',format:'文字',desc:'佩戴跳蛋或肛塞（自选其一）在家活动 2 小时，期间每 30 分钟汇报一次感受。'},
+ {id:'2-2',level:2,title:'羞耻外出装扮',type:'暴露',format:'文字',desc:'穿无内衣加外套出门散步 20 分钟（不得裸露他人可见部位），回家后写全过程感受汇报。'},
+ {id:'2-3',level:2,title:'语言调教',type:'羞耻',format:'音频',desc:'录制一段语音，用母狗语气逐句复述主人指定的 5 句羞耻话，提交音频。'},
+ {id:'2-4',level:2,title:'屁股惩戒',type:'疼痛',format:'视频',desc:'自己用手或皮拍打屁股 30 下，边打边数数，录视频提交（可不露脸）。'},
+ {id:'2-5',level:2,title:'侍奉练习',type:'侍奉',format:'照片',desc:'为假想的主人准备一顿“侍奉餐”，跪着吃完自己准备的食物，全程拍照记录。'},
+ {id:'3-1',level:3,title:'羞耻写字',type:'羞耻',format:'照片',desc:'在大腿内侧或肚子上用口红写“母狗”“欠干”等字样，拍照提交。'},
+ {id:'3-2',level:3,title:'短裙外出',type:'暴露',format:'文字',desc:'穿丁字裤加短裙去便利店买东西，全程不得整理裙摆，回家写全过程汇报。'},
+ {id:'3-3',level:3,title:'口塞忍耐',type:'忍耐',format:'视频',desc:'佩戴口球 30 分钟，期间只能发出呜咽声，录一段视频证明。'},
+ {id:'3-4',level:3,title:'高潮控制',type:'忍耐',format:'文字',desc:'自慰至接近高潮 3 次，每次在边缘停下，第 4 次才允许释放，全程文字直播汇报。'},
+ {id:'3-5',level:3,title:'跪写认错书',type:'服从',format:'照片',desc:'因前一日某个小过错（如回消息慢），跪着写 100 字认错书，称呼与自称按规矩，拍照提交。'},
+ {id:'4-1',level:4,title:'双穴开发',type:'忍耐',format:'文字',desc:'用玩具同时刺激前后，持续 20 分钟，每 5 分钟文字汇报一次状态。'},
+ {id:'4-2',level:4,title:'淫语视频',type:'羞耻',format:'视频',desc:'对着镜头用最淫荡的语言描述自己想要被怎样使用，时长不少于 2 分钟，提交视频（不露脸）。'},
+ {id:'4-3',level:4,title:'晨间灌洗',type:'日常',format:'文字',desc:'起床后先完成灌肠清洁，再跪姿汇报“已清理干净，等待使用”。'},
+ {id:'4-4',level:4,title:'开窗情趣',type:'暴露',format:'照片',desc:'在家开窗状态下（确保无人可见隐私部位）穿情趣内衣活动 1 小时，拍照提交。'},
+ {id:'4-5',level:4,title:'疼痛进阶',type:'疼痛',format:'照片+文字',desc:'乳夹佩戴 20 分钟加屁股皮拍 50 下，提交夹子佩戴照与文字汇报。'},
+ {id:'5-1',level:5,title:'全天佩戴',type:'忍耐',format:'文字',desc:'从起床到睡觉全天佩戴肛塞（除如厕外），每小时汇报一次。'},
+ {id:'5-2',level:5,title:'淫荡日记',type:'羞耻',format:'文字',desc:'写一篇不少于 500 字的淫荡日记，记录自己作为母狗的一天幻想与身体反应。'},
+ {id:'5-3',level:5,title:'侍奉全套',type:'侍奉',format:'视频',desc:'模拟主人回家全套侍奉：跪迎、拖鞋、口头请安、跪着喂食自己，全程录像（可不露脸）。'},
+ {id:'5-4',level:5,title:'多重高潮控制',type:'忍耐',format:'音频',desc:'一天内自慰 5 次，前 4 次边缘控制不释放，第 5 次释放并录下释放瞬间的叫声。'},
+ {id:'5-5',level:5,title:'项圈外出',type:'暴露',format:'文字',desc:'穿戴项圈外露（不得遮掩）在商场停留 30 分钟，回家写汇报。'},
+ {id:'6-1',level:6,title:'终身誓言',type:'服从',format:'视频',desc:'跪姿录制终身契约朗读视频，逐句念出契约全文并亲口承认身份。'},
+ {id:'6-2',level:6,title:'终极忍耐',type:'忍耐',format:'文字',desc:'佩戴全套（项圈 + 口球 + 肛塞 + 乳夹）2 小时，期间每 15 分钟文字汇报。'},
+ {id:'6-3',level:6,title:'毕业组合',type:'验证',format:'照片/视频',desc:'按主人指定的一组组合任务连续完成（从前 5 级各抽 1 个），全部提交后方可毕业。'},
+ {id:'6-4',level:6,title:'投稿展示',type:'验证',format:'文字+文件',desc:'如签署时选择愿意投稿，将毕业任务记录整理投稿，供后来者观看。仅签署时选择愿意投稿者需要完成。'},
+ {id:'6-5',level:6,title:'终身规矩',type:'日常',format:'文字',desc:'毕业后每日仍需晨起跪姿打卡，断档 3 天则打回 Lv.5 重修。'}
+];
+const $ = s => document.querySelector(s);
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2, '0');
+const todayStr = () => { const d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+const dayNumOf = s => { const p = s.split('-').map(Number); return Math.floor(new Date(p[0], p[1] - 1, p[2]).getTime() / 86400000); };
+const shiftDay = (s, n) => { const d = new Date(dayNumOf(s) * 86400000 + n * 86400000); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
+const levelOf = xp => Math.min(6, Math.floor(xp / 5) + 1);
+const levelName = l => 'Lv.' + l + ' · ' + LEVELS[l - 1];
+const taskById = id => TASKS.find(t => t.id === id);
+
+let S = load();
+function load() {
+  try { return JSON.parse(localStorage.getItem('mq-contract-v1')) || fresh(); }
+  catch (e) { return fresh(); }
+}
+function fresh() { return { account: null, xp: 0, done: {}, punishDone: {}, streak: 0, lastMain: null, created: null, mainAssigned: {} }; }
+function save() { localStorage.setItem('mq-contract-v1', JSON.stringify(S)); }
+function isDone(id, day) { return (S.done[day] || []).includes(id); }
+function mainTaskFor(day, level) {
+  const pool = TASKS.filter(t => t.level === level);
+  return pool[dayNumOf(day) % pool.length];
+}
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.style.display = 'block';
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.style.display = 'none', 5000);
+}
+function show(id) {
+  ['gate', 'contract', 'main'].forEach(v => $('#' + v).style.display = v === id ? 'block' : 'none');
+}
+function switchTab(tab) {
+  document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  ['today', 'list', 'mine', 'rules', 'contract2'].forEach(v => $('#view-' + v).style.display = v === tab ? 'block' : 'none');
+  if (tab === 'today') renderToday();
+  if (tab === 'list') renderList();
+  if (tab === 'mine') renderMine();
+  if (tab === 'rules') renderRules();
+  if (tab === 'contract2') renderContract2();
+}
+
+function renderProfile() {
+  const L = levelOf(S.xp);
+  const inLevel = L >= 6 ? Math.min(5, S.xp - 25) : S.xp - (L - 1) * 5;
+  $('#profile').innerHTML =
+    '<div class="row" style="justify-content:space-between;align-items:center"><div><h3 style="margin:0">' + esc(S.account.name) + '</h3>' +
+    '<p class="small" style="margin:2px 0">' + levelName(L) + (L >= 6 && S.xp >= 25 ? ' · 已毕业' : '') + ' · 投稿：' + (S.account.share ? '愿意' : '不愿意') + '</p></div>' +
+    '<button class="outline" id="switch-account">切换账号</button></div>' +
+    '<p>经验 ' + inLevel + ' / 5' + (L >= 6 && S.xp >= 25 ? '（毕业后可自选任务组合）' : '') + '</p>' +
+    '<div class="progress"><i style="width:' + (inLevel * 20) + '%"></i></div>' +
+    '<p class="small">连续完成今日任务 ' + S.streak + ' 天 · 连续 7 天额外 +1 经验</p>';
+  $('#switch-account').onclick = () => {
+    if (!confirm('切换账号会清除本机保存的全部进度，确定吗？')) return;
+    S = fresh(); save(); show('contract');
+  };
+}
+function taskCard(t, day, kind) {
+  const L = levelOf(S.xp);
+  const locked = t.level > L;
+  const done = isDone(t.id, day);
+  const notForMe = t.id === '6-4' && !S.account.share;
+  let btn = '';
+  if (done) btn = '<p class="ok">今日已提交 · +1 经验已计入</p>';
+  else if (notForMe) btn = '<p class="small">签署时选择了不投稿，此任务不需要完成。</p>';
+  else if (locked) btn = '<p class="small">Lv.' + t.level + ' 解锁后可做</p>';
+  else btn = '<button class="primary" data-submit="' + t.id + '" data-kind="' + kind + '">提交这个任务</button>';
+  return '<div class="card' + (locked ? ' locked' : '') + '"><span class="tag">' + t.type + ' · ' + t.format + '</span>' +
+    '<span class="tag">Lv.' + t.level + '</span><h3>' + esc(t.title) + '</h3><p>' + esc(t.desc) + '</p>' + btn + '</div>';
+}
+function renderToday() {
+  const day = todayStr();
+  const L = levelOf(S.xp);
+  const main = mainTaskFor(day, L);
+  if (!S.mainAssigned) S.mainAssigned = {};
+  if (!S.mainAssigned[day]) { S.mainAssigned[day] = main.id; save(); }
+  const yday = shiftDay(day, -1);
+  const yMain = S.created && S.created < day && S.mainAssigned[yday] ? taskById(S.mainAssigned[yday]) : null;
+  const missed = yMain && !isDone(yMain.id, yday);
+  const sideOptions = TASKS.filter(t => t.level <= L && !isDone(t.id, day) && t.id !== main.id && !(t.id === '6-4' && !S.account.share));
+  let html = '<h2>今日任务（主任务）</h2>' + taskCard(main, day, 'main');
+  if (missed) {
+    html += '<h2>昨日未完成 · 今日补做 + 惩罚</h2>' +
+      '<div class="card"><p>昨日主任务未完成：<b>' + esc(yMain.title) + '</b></p>' +
+      (isDone(yMain.id, day) ? '<p class="ok">补做已提交</p>' : '<button class="primary" data-submit="' + yMain.id + '" data-kind="makeup">补做昨日任务</button>') + '</div>';
+    if (!S.punishDone[day]) {
+      html += '<div class="card"><p>惩罚任务（完成不计经验）：</p><div class="row">' +
+        PUNISH.map((p, i) => '<button class="outline" data-punish="' + i + '">' + p + '</button>').join('') + '</div></div>';
+    } else {
+      html += '<div class="card"><p class="ok">今日惩罚任务已完成：' + esc(S.punishDone[day]) + '</p></div>';
+    }
+  }
+  html += '<h2>支线任务（自选 1 个）</h2>';
+  if (!sideOptions.length) html += '<p class="small">今日可做的支线任务都已提交。</p>';
+  else html += '<select id="side-pick">' + sideOptions.map(t => '<option value="' + t.id + '">Lv.' + t.level + ' · ' + esc(t.title) + '（' + t.type + '·' + t.format + '）</option>').join('') + '</select>' +
+    '<button class="primary" id="side-go">提交这个支线任务</button>';
+  $('#view-today').innerHTML = html;
+  $('#view-today').querySelectorAll('[data-submit]').forEach(b => b.onclick = () => openSubmit(b.dataset.submit, b.dataset.kind));
+  $('#view-today').querySelectorAll('[data-punish]').forEach(b => b.onclick = () => openSubmit('punish', 'punish', PUNISH[Number(b.dataset.punish)]));
+  const go = $('#side-go');
+  if (go) go.onclick = () => openSubmit($('#side-pick').value, 'side');
+}
+let listFilter = '全部';
+function renderList() {
+  const L = levelOf(S.xp);
+  const day = todayStr();
+  const filters = ['全部', '服从', '羞耻', '暴露', '忍耐', '疼痛', '侍奉', '验证', '日常'];
+  let html = '<h2>任务清单</h2><div class="filters">' +
+    filters.map(f => '<button class="' + (listFilter === f ? 'on' : '') + '" data-filter="' + f + '">' + f + '</button>').join('') + '</div>';
+  for (let lv = 1; lv <= 6; lv++) {
+    const items = TASKS.filter(t => t.level === lv && (listFilter === '全部' || t.type === listFilter));
+    if (!items.length) continue;
+    html += '<h3 style="margin-top:20px">' + levelName(lv) + (lv > L ? '（未解锁）' : '') + '</h3>' +
+      items.map(t => taskCard(t, day, 'side')).join('');
+  }
+  $('#view-list').innerHTML = html;
+  $('#view-list').querySelectorAll('[data-filter]').forEach(b => b.onclick = () => { listFilter = b.dataset.filter; renderList(); });
+  $('#view-list').querySelectorAll('[data-submit]').forEach(b => b.onclick = () => openSubmit(b.dataset.submit, b.dataset.kind));
+}
+function renderMine() {
+  const L = levelOf(S.xp);
+  const days = Object.keys(S.done).sort().reverse().slice(0, 14);
+  let hist = days.length ? days.map(d => '<p><b>' + d + '</b>：' + S.done[d].map(id => esc((taskById(id) || {}).title || id)).join('、') + '</p>').join('')
+    : '<p class="small">还没有提交记录。</p>';
+  $('#view-mine').innerHTML = '<h2>我的进度</h2><div class="card"><p>等级：' + levelName(L) + '</p><p>总经验：' + S.xp + ' 点</p>' +
+    '<p>连续完成今日任务：' + S.streak + ' 天</p><p>代号：' + esc(S.account.name) + ' · 投稿：' + (S.account.share ? '愿意' : '不愿意') + '</p></div>' +
+    '<h2>日常规矩</h2><div class="card">' + DAILY_RULES.slice(0, L).map((r, i) => '<p>Lv.' + (i + 1) + '：' + r + '</p>').join('') + '</div>' +
+    '<h2>提交记录（近 14 天）</h2><div class="card">' + hist + '</div>';
+}
+function renderRules() {
+  $('#view-rules').innerHTML = '<h2>奖惩</h2><div class="card">' +
+    '<p>完成：+1 点经验（主任务、支线任务均计；惩罚任务不计）。</p>' +
+    '<p>连续 7 天完成当日任务：额外 +1 点经验。</p>' +
+    '<p>敷衍或造假：该任务不计经验 + 1 个惩罚任务。</p>' +
+    '<p>当日未完成：次日补做 + 1 个惩罚任务。</p>' +
+    '<p>连续 3 天未完成：降 1 级（由主人约定是否启用本条）。</p>' +
+    '<p>惩罚任务示例：数量加倍、追加羞耻汇报（仅在自愿投稿范围内）、追加疼痛任务。</p></div>' +
+    '<h2>进化仪式</h2><div class="card"><p>每升 1 级：获得新称号，解锁下一级任务池，新增 1 条日常规矩。</p>' +
+    '<p>Lv.6 毕业：获得“终身母狗”称号，全部任务池解锁，可自选任务组合。</p></div>' +
+    '<h2>附则</h2><div class="card"><p>仅限成年人自愿参与；任何任务不得伤害他人，不得在公共场合裸露他人可见的隐私部位；身体不适立即停止；任务强度可与主人协商调整。</p>' +
+    '<p>提交内容只发送给管理员审核，不公开。照片、视频请自行确认不露脸、不含他人隐私与定位信息。</p></div>';
+}
+function renderContract2() {
+  $('#view-contract2').innerHTML = '<p class="eyebrow">第一章 · 契约宣言</p><h2>母狗的终身契约</h2><div class="card">' +
+    '<p>我承认自己是一只渴望被调教、被约束、被使用的小母狗。我愿意从最基础的服从开始，一步步接受更强的规矩、更重的任务、更彻底的羞耻与疼痛。我明白：契约一旦生效，任务必须完成；完成得越干净、越彻底，我才配继续进化。我不会找借口，不会半途而废，不会在中途假装忘记自己是谁。</p>' +
+    '<p><b>签署即生效。</b></p></div>';
+}
+
+let currentTab = 'today';
+let submitCtx = null;
+function acceptFor(t) {
+  if (!t) return 'image/jpeg,image/png,image/webp,video/mp4,video/webm,audio/*';
+  if (t.format === '照片') return 'image/jpeg,image/png,image/webp';
+  if (t.format === '视频') return 'video/mp4,video/webm';
+  if (t.format === '音频') return 'audio/*';
+  if (t.format === '照片/视频') return 'image/jpeg,image/png,image/webp,video/mp4,video/webm';
+  return 'image/jpeg,image/png,image/webp,video/mp4,video/webm,audio/*';
+}
+function openSubmit(taskId, kind, punishName) {
+  const t = taskId === 'punish' ? null : taskById(taskId);
+  const title = t ? t.title : ('惩罚任务：' + punishName);
+  const desc = t ? t.desc : '按主人约定完成该惩罚任务，提交文字汇报（可附照片/视频/音频）。完成不计经验。';
+  const needText = t ? t.format.includes('文字') : true;
+  const needFile = t ? (t.format.includes('照片') || t.format.includes('视频') || t.format.includes('音频')) : false;
+  submitCtx = { taskId, kind, punishName, needText, needFile, busy: false };
+  $('#submit-body').innerHTML =
+    '<h3 style="margin-top:0">' + esc(title) + '</h3>' +
+    '<p class="small">' + (t ? esc(t.type) + ' · ' + esc(t.format) + ' · Lv.' + t.level + '<br>' : '') + esc(desc) + '</p>' +
+    '<label>文字汇报' + (needText ? '（必填，900 字以内）' : '（可选）') + '<textarea id="s-text" rows="4" maxlength="900" placeholder="只写与任务有关的汇报，不填写真实身份、住址等私人信息"></textarea></label>' +
+    '<label>选择文件' + (needFile ? '（必填：照片 ≤ 5 MB，视频 / 音频 ≤ 20 MB）' : '（可选）') + '<input id="s-file" type="file" accept="' + acceptFor(t) + '"></label>' +
+    '<p class="small" id="s-fileinfo"></p>' +
+    '<label class="check"><input type="checkbox" id="s-consent"><span>我明确同意将所选内容发送给管理员，仅用于审核本任务和发放经验，不公开，我可以联系管理员删除。</span></label>' +
+    '<label class="check"><input type="checkbox" id="s-rules"><span>我确认内容为本人自愿提交，不含他人隐私，不在公共场合裸露他人可见部位，身体不适会立即停止。</span></label>' +
+    '<p class="err" id="s-err"></p><p class="ok" id="s-status"></p>' +
+    '<div class="row"><button class="outline" id="s-cancel">取消</button><button class="primary" id="s-go" disabled>提交给管理员审核</button></div>' +
+    '<p class="small">提交经中转发送给管理员审核；本页无后端，审核结果不会回显到这里。</p>';
+  const go = $('#s-go');
+  const sync = () => {
+    const textOk = !needText || $('#s-text').value.trim().length > 0;
+    const fileOk = !needFile || ($('#s-file').files && $('#s-file').files[0]);
+    go.disabled = !(textOk && fileOk && $('#s-consent').checked && $('#s-rules').checked) || submitCtx.busy;
+  };
+  $('#s-text').addEventListener('input', sync);
+  $('#s-file').addEventListener('change', () => {
+    const f = $('#s-file').files[0];
+    $('#s-fileinfo').textContent = f ? '已选：' + f.name + '（' + (f.size / 1024 / 1024).toFixed(2) + ' MB）' : '';
+    sync();
+  });
+  $('#s-consent').addEventListener('change', sync);
+  $('#s-rules').addEventListener('change', sync);
+  $('#s-cancel').onclick = () => $('#submit-dialog').close();
+  go.onclick = doSubmit;
+  $('#submit-dialog').showModal();
+}
+function fileError(f) {
+  if (!f) return null;
+  const ok = f.type.startsWith('image/') || f.type.startsWith('video/') || f.type.startsWith('audio/');
+  if (!ok) return '文件类型不支持（只接受照片、视频、音频）';
+  const limit = f.type.startsWith('image/') ? 5 * 1024 * 1024 : 20 * 1024 * 1024;
+  if (f.size <= 0 || f.size > limit) return f.type.startsWith('image/') ? '照片最多 5 MB' : '视频 / 音频最多 20 MB';
+  return null;
+}
+async function doSubmit() {
+  const ctx = submitCtx;
+  if (ctx.busy) return;
+  const text = $('#s-text').value.trim();
+  const file = $('#s-file').files[0] || null;
+  const ferr = fileError(file);
+  if (ctx.needText && !text) { $('#s-err').textContent = '请填写文字汇报'; return; }
+  if (ctx.needFile && !file) { $('#s-err').textContent = '请先选择文件'; return; }
+  if (ferr) { $('#s-err').textContent = ferr; return; }
+  ctx.busy = true; $('#s-go').disabled = true; $('#s-err').textContent = '';
+  $('#s-status').textContent = '正在提交…中断后请先在“我的进度”核实结果，避免重复提交。';
+  try {
+    const L = levelOf(S.xp);
+    const t = ctx.taskId === 'punish' ? null : taskById(ctx.taskId);
+    const meta = t
+      ? '代号：' + S.account.name + ' | ' + levelName(L) + ' | 任务：' + t.title + ' | ' + t.type + '·' + t.format + ' | 投稿：' + (S.account.share ? '是' : '否')
+      : '代号：' + S.account.name + ' | 惩罚任务：' + ctx.punishName + ' | 投稿：' + (S.account.share ? '是' : '否');
+    const fd = new FormData();
+    if (file) fd.append('file', file);
+    if (text) fd.append('text', text);
+    fd.append('meta', meta);
+    let res;
+    try { res = await fetch(WORKER_URL, { method: 'POST', body: fd }); }
+    catch (e) { throw new Error('网络失败，请检查网络后重试。提交前请先在“我的进度”确认是否已成功，避免重复提交。'); }
+    let data = {};
+    try { data = await res.json(); } catch (e) { /* 非 JSON 响应 */ }
+    if (res.status === 403) throw new Error('来源未通过 Worker 校验：请从 Pages 地址访问（本地直接打开文件会跨域失败）。');
+    if (!res.ok || !data.ok) {
+      const map = {
+        file_too_large: '文件太大（照片 ≤ 5 MB，视频 / 音频 ≤ 20 MB）',
+        file_type_not_allowed: '文件类型不支持（只接受照片、视频、音频）',
+        relay_not_configured: '中转未配置，请检查 Worker 的 Secrets（BOT_TOKEN、ADMIN_CHAT_ID）',
+        empty_submission: '提交内容为空'
+      };
+      throw new Error(map[data.error] || '发送失败，请重试。');
+    }
+    const day = todayStr();
+    const oldXp = S.xp, oldL = levelOf(S.xp);
+    let bonus = false;
+    if (ctx.kind === 'punish') {
+      S.punishDone[day] = ctx.punishName;
+    } else {
+      if (!isDone(ctx.taskId, day)) {
+        S.done[day] = (S.done[day] || []).concat(ctx.taskId);
+        S.xp += 1;
+      }
+      if (ctx.kind === 'main') {
+        S.streak = S.lastMain === shiftDay(day, -1) ? S.streak + 1 : 1;
+        S.lastMain = day;
+        if (S.streak % 7 === 0) { S.xp += 1; bonus = true; }
+      }
+    }
+    save();
+    $('#submit-dialog').close();
+    const newL = levelOf(S.xp);
+    if (newL > oldL) {
+      $('#ceremony-body').innerHTML = '<p class="eyebrow">进化仪式</p><h3 style="margin-top:0">恭喜，进化了！</h3>' +
+        '<p>新称号：<b>' + levelName(newL) + '</b></p>' +
+        (newL < 6 ? '<p>下一级任务池已解锁。</p>' : '<p>全部任务池已解锁，可自选任务组合。</p>') +
+        '<p>新增日常规矩：' + DAILY_RULES[newL - 1] + '</p>' +
+        '<button class="primary" id="ceremony-ok">知道了</button>';
+      $('#ceremony-ok').onclick = () => $('#ceremony-dialog').close();
+      $('#ceremony-dialog').showModal();
+    }
+    toast('已提交给管理员审核。' + (bonus ? '连续 7 天，额外 +1 经验。' : (ctx.kind === 'punish' ? '惩罚任务已完成（不计经验）。' : '经验 +1。')));
+    renderProfile();
+    switchTab(currentTab);
+  } catch (e) {
+    $('#s-err').textContent = e.message;
+    $('#s-status').textContent = '未确认提交成功。可重试；若网络中断，请先在“我的进度”核实。';
+  } finally {
+    ctx.busy = false;
+    const go = $('#s-go');
+    if (go) go.disabled = false;
+  }
+}
+
+$('#age-ok').onclick = () => {
+  localStorage.setItem('mq-age-ok', '1');
+  if (S.account) { renderProfile(); show('main'); switchTab('today'); }
+  else show('contract');
+};
+$('#age-no').onclick = () => { $('#age-left').style.display = 'block'; };
+$('#sign-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('#f-name').value.trim();
+  const contact = $('#f-contact').value;
+  const invite = $('#f-invite').value.trim();
+  const share = document.querySelector('input[name="share"]:checked').value === 'yes';
+  const err = $('#sign-err');
+  if (!name) { err.textContent = '请填写姓名或代号'; return; }
+  if (!contact || contact.length < 5) { err.textContent = '联系方式至少 5 位'; return; }
+  if (S.account && S.account.name === name) {
+    if (S.account.contact !== contact) { err.textContent = '联系方式不对，请重新输入'; return; }
+    show('main'); renderProfile(); switchTab('today'); return;
+  }
+  if (S.account && S.account.name !== name) {
+    err.textContent = '本机已有账号“' + S.account.name + '”，请用原姓名登录，或先在主界面切换账号清除进度。';
+    return;
+  }
+  if (!invite) { err.textContent = '新账号首次需要邀请码'; return; }
+  S.account = { name, contact, invite, share };
+  S.created = todayStr();
+  save();
+  show('main'); renderProfile(); switchTab('today');
+});
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => { currentTab = b.dataset.tab; switchTab(currentTab); });
+
+(function init() {
+  if (localStorage.getItem('mq-age-ok')) {
+    if (S.account) { renderProfile(); show('main'); switchTab('today'); }
+    else show('contract');
+  } else {
+    show('gate');
+  }
+})();
+</script>
+</body>
+</html>
